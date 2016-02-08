@@ -9,7 +9,7 @@ public class App {
 	static ECommerceMarket amazon= new ECommerceMarket();
 	public static void main(String[] args) throws IOException {
 	
-		addProductsToMarket();
+		addData();
 		while(true)
 		{
 			System.out.println("Welcome to the E-Commerce Market");	
@@ -19,7 +19,10 @@ public class App {
 			System.out.println("3. Add Product to Cart");
 			System.out.println("4. View Items in Cart"); 
 			System.out.println("5. Place Order");
-			System.out.println("6. Exit");
+			System.out.println("6. View All Suppliers");
+			System.out.println("7. View Product");
+			System.out.println("15. Exit");
+			
 			System.out.println("enter option:");
 			Scanner input = new Scanner(System.in);
 			int option = input.nextInt();
@@ -47,30 +50,61 @@ public class App {
 				break;
 				
 			case 3: 
+				boolean productIdExists=false;
 				System.out.println("Enter product id:");
-				Scanner input3 = new Scanner(System.in);
-				int productId = input3.nextInt();
+				Scanner input4 = new Scanner(System.in);
+				int pId=input4.nextInt();
+				
+				System.out.println("Enter supplier id:");
+				input4 = new Scanner(System.in);
+				int supplierId = input4.nextInt();
 				
 				System.out.println("Enter quantity:");
-				Scanner input4 = new Scanner(System.in);
-				int productQuantity = input3.nextInt();
+				input4 = new Scanner(System.in);
+				int quantity = input4.nextInt();
 				
-				amazon.cart.addItem(productId, productQuantity);
+				amazon.addToCart(pId, supplierId, quantity);
+				
+				System.in.read();
 				break;
 			case 4:
-				for(CartItem ci:amazon.cart.viewItems())
-				{
-					System.out.println(ci);
-				}
+				amazon.viewCartItems();
+				
 				System.in.read();
 				break;
 			case 5:
-				Order order = new Order(amazon.cart.cartItems,new Date());
-				amazon.orders.add(order);
-				System.out.println(order);
+				amazon.placeOrder();
 				System.in.read();
 				break;
+			
+				
 			case 6:
+				amazon.viewSuppliers();
+				System.in.read();
+				break;
+			case 7:
+				boolean productExists=false;
+				System.out.println("Enter product id:");
+				Scanner input3 = new Scanner(System.in);
+				int prodId=input3.nextInt();
+				
+				for(Product p:amazon.products)
+				{
+					if(prodId==p.id)
+						{
+						productExists=true;
+						}
+				}
+				if(!productExists)
+				{
+					System.out.println("product id does not exist");
+				}
+				amazon.viewProduct(prodId);
+				System.in.read();
+				break;
+				
+				
+			case 15:
 				System.exit(0);
 				
 			}
@@ -79,9 +113,23 @@ public class App {
 		
 		
 		
-		
+
 		
 
+	}
+	
+	static void addData()
+	{
+		addSuppliersToMarket();
+		addProductsToMarket();
+		addSupplierProductToMarket();
+	}
+	
+	static void addSuppliersToMarket()
+	{
+		amazon.addSupplier("Guptas", "#101, MG Road, Bangalore");
+		amazon.addSupplier("Mehras", "#12, 5th Block Kormangala, Bangalore");
+		amazon.addSupplier("Reddys", "#322, JC Road, Bangalore");
 	}
 	static void addProductsToMarket()
 	{
@@ -89,25 +137,39 @@ public class App {
 		keywords.add("shoes");
 		keywords.add("puma");
 		keywords.add("running");
-		amazon.addProduct("Puma Running Shoes", 3500.00f, keywords);
+		amazon.addProduct("Puma Running Shoes", keywords);
 		keywords = new ArrayList<String>();
 		keywords.add("laptop");
 		keywords.add("dell");
 		keywords.add("computer");
 		keywords.add("inspiron");
-		amazon.addProduct("Dell Inspiron Laptop", 4500.00f,keywords);
+		amazon.addProduct("Dell Inspiron Laptop", keywords);
 		keywords = new ArrayList<String>();
 		keywords.add("pigeon");
 		keywords.add("stove");
 		keywords.add("cooking");
 		keywords.add("gas");
-		amazon.addProduct("Pigeon Gas Stove", 2000f,keywords );
+		amazon.addProduct("Pigeon Gas Stove", keywords );
 		keywords = new ArrayList<String>();
 		keywords.add("LG");
 		keywords.add("190");
 		keywords.add("fridge");
 		keywords.add("refrigerator");
-		amazon.addProduct("LG 190L Refrigerator", 13500f, keywords);
+		amazon.addProduct("LG 190L Refrigerator", keywords);
+	}
+	
+	static void addSupplierProductToMarket()
+	{
+		amazon.addSupplierProduct(1, 1, 5, 3000, 0);
+		amazon.addSupplierProduct(1, 2 , 1, 2800, 0);
+		amazon.addSupplierProduct(2, 2, 5, 20000, 0);
+		amazon.addSupplierProduct(2, 3, 10, 18000, 0);
+		amazon.addSupplierProduct(3, 2, 5, 2000, 0);
+		amazon.addSupplierProduct(4, 2, 50, 10000, 10);
+		
+		
+		
+		
 	}
 
 }

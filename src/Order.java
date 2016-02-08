@@ -14,21 +14,10 @@ public class Order {
 		
 		for (CartItem oi :OrderItems)
 		{
-			float priceofOrderItem=0;
-			//Get prices for each product in the order form eCommerceMarket object amazon
-			//multiply it with the corresponding quantity of the object in the order
-			//add all those to get the total bill amount
-			for(Product p:App.amazon.products)
-				{
-				if(oi.productId==p.id)
-					{
-					priceofOrderItem=p.getPrice()*oi.quantity;
-					break;
-					}
-				}
-			totalBillAmount+=priceofOrderItem;	
+			totalBillAmount+=oi.priceAfterDiscount;	
 			
 		}
+		
 	}
 	@Override
 	public String toString() {
