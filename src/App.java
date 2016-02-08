@@ -30,6 +30,7 @@ public class App {
 					{
 					System.out.println(p);
 					}
+				System.in.read();
 				break;
 			case 2:
 				System.out.println("enter keyword for product search:");
@@ -42,7 +43,9 @@ public class App {
 					{
 					System.out.println(p);
 					}
+				System.in.read();
 				break;
+				
 			case 3: 
 				System.out.println("Enter product id:");
 				Scanner input3 = new Scanner(System.in);
@@ -59,17 +62,19 @@ public class App {
 				{
 					System.out.println(ci);
 				}
+				System.in.read();
 				break;
 			case 5:
 				Order order = new Order(amazon.cart.cartItems,new Date());
 				amazon.orders.add(order);
 				System.out.println(order);
+				System.in.read();
 				break;
 			case 6:
 				System.exit(0);
 				
 			}
-			System.in.read();
+			
 		}
 		
 		
