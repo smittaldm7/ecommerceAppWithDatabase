@@ -41,7 +41,13 @@ public class Cart {
 	}
 	void empty()
 	{
-		cartItems.clear();
+		cartItems=new ArrayList<CartItem>();
 	}
+
+	@Override
+	public String toString() {
+		return "Cart [cartItems=" + cartItems + ", amount=" + amount + "]";
+	}
+	
 
 }

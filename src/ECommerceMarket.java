@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 
 
@@ -10,16 +9,21 @@ public class ECommerceMarket {
 
 	List<Product> products = new ArrayList<Product>();
 	List<Supplier> suppliers = new ArrayList<Supplier>();
-	Cart cart = new Cart();
-	List<Order> orders = new ArrayList<Order>();
+	List<Customer> customers = new ArrayList<>();
+	Customer currentCustomer=null;
+	
+	
+	
 	void addProduct(String name, List<String> keywords)
 	{
 		products.add(new Product(name, keywords));
 	}
+	
 	void addSupplier(String name, String address)
 	{
 		suppliers.add(new Supplier(name, address));
 	}
+	
 	void addSupplierProduct(int productId, int supplierId, int stock, 
 			float price, int discountPercent)
 	{
@@ -34,6 +38,13 @@ public class ECommerceMarket {
 		}
 
 	}
+	
+	public void addCustomer(String name, String address, long phoneNumber,
+			String email, String password)
+	{
+		customers.add(new Customer(name, address, phoneNumber, email, password));
+	}
+	
 	
 	List<Product> findProduct(String searchString)
 	{
@@ -88,22 +99,22 @@ public class ECommerceMarket {
 			{
 			return;
 			}
-		cart.addItem(pId, supplierId, quantity,currentSupplierProduct.price,
+		currentCustomer.cart.addItem(pId, supplierId, quantity,currentSupplierProduct.price,
 				currentSupplierProduct.priceAfterDiscount());
 		System.out.println("item added to cart");
 		
 	}
 	public void placeOrder() {
-		if(cart.cartItems.isEmpty())
+		if(currentCustomer.cart.cartItems.isEmpty())
 		{
 			System.out.println("No items in cart");
 			return;
 		}
-		Order order = new Order(cart.cartItems,new Date());
+		Order order = new Order(currentCustomer.cart.cartItems,new Date());
 		//add order
-		orders.add(order);
+		currentCustomer.orders.add(order);
 		//reduce items from supplier record
-		for(CartItem ci:cart.cartItems)
+		for(CartItem ci:currentCustomer.cart.cartItems)
 		{
 			for(Product p:products)
 			{
@@ -119,12 +130,12 @@ public class ECommerceMarket {
 		}
 		
 		//empty cart
-		cart.empty();
+		currentCustomer.cart.empty();
 		System.out.println("Order Placed"+order);
 		
 	}
 	public void viewCartItems() {
-		for(CartItem ci:cart.viewItems())
+		for(CartItem ci:currentCustomer.cart.viewItems())
 		{
 			System.out.println(ci);
 		}
@@ -145,6 +156,35 @@ public class ECommerceMarket {
 				System.out.println(p);
 		}
 		
+	}
+	public void login(String email, String password)
+	{
+		for(Customer c:customers)
+		{
+			if(email.equals(c.email))
+			{
+				if(password.equals(c.password))
+				{
+					System.out.println("Login successful");
+					currentCustomer=c;
+					return;
+					
+				}
+			}
+		}
+		System.out.println("Login unsuccessful");
+		
+	}
+
+	public String viewCustomerDetails() 
+	{
+
+		return currentCustomer.toString();
+	}
+	
+	public String viewOrders()
+	{
+		return currentCustomer.viewOrders();
 	}
 	
 	

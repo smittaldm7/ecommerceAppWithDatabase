@@ -21,6 +21,9 @@ public class App {
 			System.out.println("5. Place Order");
 			System.out.println("6. View All Suppliers");
 			System.out.println("7. View Product");
+			System.out.println("8. Login");
+			System.out.println("9. View Customer Details");
+			System.out.println("10. View Order History");
 			System.out.println("15. Exit");
 			
 			System.out.println("enter option:");
@@ -50,6 +53,12 @@ public class App {
 				break;
 				
 			case 3: 
+				if(amazon.currentCustomer==null)
+				{
+					System.out.println("Not logged in");
+					System.in.read();
+					break;
+					}
 				boolean productIdExists=false;
 				System.out.println("Enter product id:");
 				Scanner input4 = new Scanner(System.in);
@@ -68,11 +77,24 @@ public class App {
 				System.in.read();
 				break;
 			case 4:
+				if(amazon.currentCustomer==null)
+				{
+					System.out.println("Not logged in");
+					System.in.read();
+					break;
+					}
 				amazon.viewCartItems();
 				
 				System.in.read();
 				break;
 			case 5:
+				if(amazon.currentCustomer==null)
+					{
+					System.out.println("Not logged in");
+					System.in.read();
+					break;
+					}
+				
 				amazon.placeOrder();
 				System.in.read();
 				break;
@@ -103,6 +125,40 @@ public class App {
 				System.in.read();
 				break;
 				
+			case 8:
+				System.out.println("Enter login");
+				Scanner input5 = new Scanner(System.in);
+				String email = input5.nextLine();
+				
+				input5 = new Scanner(System.in);
+				String password = input5.nextLine();
+				amazon.login(email, password);
+				
+				System.in.read();
+				break;
+				
+			case 9:
+				if(amazon.currentCustomer==null)
+				{
+					System.out.println("Not logged in");
+					System.in.read();
+					break;
+				}
+				System.out.println(amazon.viewCustomerDetails());
+				System.in.read();
+				break;
+			
+			case 10:
+				if(amazon.currentCustomer==null)
+				{
+					System.out.println("Not logged in");
+					System.in.read();
+					break;
+				}
+				System.out.println(amazon.viewOrders());
+				System.in.read();
+				break;
+				
 				
 			case 15:
 				System.exit(0);
@@ -123,8 +179,11 @@ public class App {
 		addSuppliersToMarket();
 		addProductsToMarket();
 		addSupplierProductToMarket();
+		addCustomer();
 	}
 	
+	
+
 	static void addSuppliersToMarket()
 	{
 		amazon.addSupplier("Guptas", "#101, MG Road, Bangalore");
@@ -169,6 +228,13 @@ public class App {
 		
 		
 		
+		
+	}
+	private static void addCustomer() {
+		amazon.addCustomer("sidharth", "#1 NGV Koramangala", 22067130,
+				"smittaldm7@gmail.com", "sid123");
+		amazon.addCustomer("Ramona", "#5 MG Road", 22023430,
+				"email.vineetmittal@gmail.com", "vin123");
 		
 	}
 
