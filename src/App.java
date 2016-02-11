@@ -1,5 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +12,8 @@ public class App {
 	static ECommerceMarket amazon= new ECommerceMarket();
 	public static void main(String[] args) throws IOException {
 	
-		addData();
+		//addData();
+		readDataFromFile();
 		while(true)
 		{
 			System.out.println("Welcome to the E-Commerce Market");	
@@ -159,7 +163,6 @@ public class App {
 				System.in.read();
 				break;
 				
-				
 			case 15:
 				System.exit(0);
 				
@@ -174,6 +177,138 @@ public class App {
 
 	}
 	
+	
+
+	private static void readDataFromFile() {
+		readProducts();
+		readSuppliers();
+		readSupplierProducts();
+		readCustomers();
+		
+	}
+
+
+	private static void readProducts() 
+	{
+		Scanner s=null;
+		try {
+			s = new Scanner(new File("products"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(s.hasNextLine())
+		{
+			String line =s.nextLine();
+			//System.out.println(line);
+			String[] splitLine = line.split(";");
+			List<Object> splitLineList = new ArrayList<>();
+			int i=1;
+			for(String st:splitLine)
+				{
+				switch(i)
+					{
+					case 1:
+						String name= st;
+						splitLineList.add(st);
+						break;
+					
+					case 2:
+						String[] keywords = st.split(",");
+						List<String> keywordsList = new ArrayList<String>(Arrays.asList(keywords));
+						splitLineList.add(keywordsList);
+						break;
+					}
+				i++;
+				}
+
+			amazon.addProduct((String)splitLineList.get(0), (List<String>)splitLineList.get(1));
+			
+		}
+	}
+	private static void readSuppliers() {
+		Scanner s=null;
+		try 
+		{
+			s = new Scanner(new File("suppliers"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(s.hasNextLine())
+		{
+			String line =s.nextLine();
+			System.out.println(line);
+			String[] splitLine = line.split(";");
+			List<String> splitLineList = new ArrayList<String>(Arrays.asList(splitLine));
+			System.out.println(splitLineList);
+			
+			amazon.addSupplier(splitLineList.get(0), splitLineList.get(1));
+		}
+		
+	}
+
+
+	private static void readSupplierProducts() {
+		Scanner s=null;
+		try 
+		{
+			s = new Scanner(new File("productsupplier"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(s.hasNextLine())
+		{
+			String line =s.nextLine();
+			//System.out.println(line);
+			String[] splitLine = line.split(";");
+			List<Integer> splitLineListInt = new ArrayList<Integer>();
+			for(String ss:splitLine)
+			{
+				splitLineListInt.add(Integer.valueOf(ss.trim()));
+			}
+					
+			amazon.addSupplierProduct(splitLineListInt.get(0),	splitLineListInt.get(1),
+					splitLineListInt.get(2),splitLineListInt.get(3),splitLineListInt.get(4));
+		}
+	}
+	
+
+	private static void readCustomers() {
+		Scanner s=null;
+		try 
+		{
+			s = new Scanner(new File("customers"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(s.hasNextLine())
+		{
+			String line =s.nextLine();
+			//System.out.println(line);
+			String[] splitLine = line.split(";");
+			List<Object> splitLineList = new ArrayList<>();
+			int i=0;
+			for(String ss:splitLine)
+			{
+				
+				if(i==2)
+					splitLineList.add(Long.valueOf(ss.trim()));
+				else
+					splitLineList.add(ss.trim());
+				i++;
+			}
+			
+			System.out.println(splitLineList.get(3).getClass());
+		
+			amazon.addCustomer((String)splitLineList.get(0), (String)splitLineList.get(1),
+					(Long)splitLineList.get(2),(String)splitLineList.get(3),(String)splitLineList.get(4));
+		}
+		
+	}
+
 	static void addData()
 	{
 		addSuppliersToMarket();

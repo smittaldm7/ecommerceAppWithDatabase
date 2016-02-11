@@ -25,6 +25,10 @@ public class Product {
 		this.name = name;
 		this.keywords = keywords;
 	}
+
+	public Product() {
+		// TODO Auto-generated constructor stub
+	}
 	
 
 	
