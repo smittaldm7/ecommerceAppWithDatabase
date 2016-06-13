@@ -1,4 +1,4 @@
-package model;
+package service;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,39 +20,40 @@ public class Database {
 		return instance;
 	}
 	
-	Connection con;
+	Connection conn;
 	
 	public Connection getConnection() {
-		return con;
+		return conn;
 	}
 	
 	
 	public void connect() throws Exception {
-		if (con != null)
+		if (conn != null)
 			return;
-		System.out.println("lulu");
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			throw new Exception("Driver not found");
-		}
 
-		System.out.println("lulu2");
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) 
+			{
+			throw new Exception("Driver not found");
+			}
+
 		String url = String.format("jdbc:mysql://localhost:%d/ecommerce", 3306);
-		System.out.println("lulu3");
-		con = DriverManager.getConnection(url, "root", "password");
-		System.out.println("lulu4");
+		conn = DriverManager.getConnection(url, "root", "password");
 	}
 	
 	public void disconnect() {
-		if (con != null) {
-			try {
-				con.close();
-			} catch (SQLException e) {
+		if (conn != null) 
+		{
+			try 
+			{
+				conn.close();
+			} catch (SQLException e) 
+				{
 				System.out.println("Can't close connection");
-			}
+				}
 		}
-		
-		con = null;
+		conn = null;
 	}
 }

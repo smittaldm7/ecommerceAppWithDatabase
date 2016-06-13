@@ -1,7 +1,10 @@
-package package1;
+package controller;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +12,11 @@ import java.util.Scanner;
 
 import model.CartItem;
 import model.Customer;
-import model.Database;
 import model.Order;
 import model.OrderItem;
 import model.Product;
 import model.SupplierProduct;
+import service.Database;
 
 
 public class App {
@@ -489,6 +492,20 @@ public class App {
 	
 	
 
+	
+	
+	static void addSuppliersToMarket()
+	{
+		try {
+			amazon.addSupplier("Guptas", "#101, MG Road, Bangalore");
+			amazon.addSupplier("Mehras", "#12, 5th Block Kormangala, Bangalore");
+			amazon.addSupplier("Reddys", "#322, JC Road, Bangalore");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	static void addProductsandKeywordsToMarket()
 	{
 		try 
@@ -554,18 +571,6 @@ public class App {
 
 		catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	static void addSuppliersToMarket()
-	{
-		try {
-			amazon.addSupplier("Guptas", "#101, MG Road, Bangalore");
-			amazon.addSupplier("Mehras", "#12, 5th Block Kormangala, Bangalore");
-			amazon.addSupplier("Reddys", "#322, JC Road, Bangalore");
-		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
