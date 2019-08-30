@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import database.Database;
 import model.CartItem;
 import model.Customer;
 import model.Order;
 import model.OrderItem;
 import model.Product;
 import model.SupplierProduct;
-import service.Database;
 
 
 public class App {
@@ -189,15 +189,15 @@ public class App {
 			case 7:
 				
 				
-				System.out.println("Enter product name:");
+				System.out.println("Enter product id:");
 				Scanner input3 = new Scanner(System.in);
-				String productName=input3.nextLine();
+				int productId = Integer.parseInt(input3.nextLine());
 				
 				List<SupplierProduct> productSuppliersList = null;
 				
 				try 
 				{
-					productSuppliersList = amazon.getProductDetails(productName);
+					productSuppliersList = amazon.getProductDetails(productId);
 				} 
 				catch (SQLException e2) 
 				{
@@ -316,6 +316,143 @@ public class App {
 		
 
 	}
+	
+	
+
+	
+	static void addDataToDatabase()
+	{
+		//addSuppliersToMarket();
+		//addProductsandKeywordsToMarket();
+		//addSupplierProductToMarket();
+		//addCustomer();
+	}
+	
+	
+
+	
+	
+	static void addSuppliersToMarket()
+	{
+		try {
+			amazon.addSupplier("Guptas", "#101, MG Road, Bangalore");
+			amazon.addSupplier("Mehras", "#12, 5th Block Kormangala, Bangalore");
+			amazon.addSupplier("Reddys", "#322, JC Road, Bangalore");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	static void addProductsandKeywordsToMarket()
+	{
+		try 
+		{
+			amazon.addKeyword("shoes");
+			amazon.addKeyword("puma");
+			amazon.addKeyword("running");
+			
+			amazon.addProduct("Puma Running Shoes");
+			
+			List<String> keywords = new ArrayList<String>();
+			keywords.add("shoes");
+			keywords.add("puma");
+			keywords.add("running");
+			amazon.addProductKeyword("Puma Running Shoes", keywords);
+			
+			
+			amazon.addKeyword("laptop");
+			amazon.addKeyword("dell");
+			amazon.addKeyword("computer");
+			amazon.addKeyword("inspiron");
+			
+			amazon.addProduct("Dell Inspiron Laptop");
+			
+			keywords.clear();
+			keywords.add("laptop");
+			keywords.add("dell");
+			keywords.add("computer");
+			keywords.add("inspiron");
+			amazon.addProductKeyword("Dell Inspiron Laptop", keywords);
+			
+			
+			amazon.addKeyword("pigeon");
+			amazon.addKeyword("stove");
+			amazon.addKeyword("cooking");
+			amazon.addKeyword("gas");
+			
+			amazon.addProduct("Pigeon Gas Stove");
+			
+			keywords.clear();
+			keywords.add("pigeon");
+			keywords.add("stove");
+			keywords.add("cooking");
+			keywords.add("gas");
+			amazon.addProductKeyword("Pigeon Gas Stove", keywords);
+			
+			
+			amazon.addKeyword("LG");
+			amazon.addKeyword("190");
+			amazon.addKeyword("fridge");
+			amazon.addKeyword("refrigerator");
+			
+			amazon.addProduct("LG 190L Refrigerator");
+			
+			keywords.clear();
+			keywords.add("LG");
+			keywords.add("190");
+			keywords.add("fridge");
+			keywords.add("refrigerator");
+			amazon.addProductKeyword("LG 190L Refrigerator", keywords);
+			
+		} 
+
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	static void addSupplierProductToMarket()
+	{
+		
+		//Taking supplier name and product name as argument instead of supplier id and product id
+		//Just so that there is some logic to be processed in the SQL layer via a stored procedure
+		try 
+		{
+			amazon.addSupplierProduct(1, 1, 5, 3000, 0);
+			amazon.addSupplierProduct(1, 2, 1, 2800, 0);
+			amazon.addSupplierProduct(2, 2, 5, 20000, 0);
+			amazon.addSupplierProduct(2, 3, 10, 18000, 0);
+			amazon.addSupplierProduct(3, 2, 5, 2000, 0);
+			amazon.addSupplierProduct(4, 2, 50, 10000, 10);
+			
+			
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
+	private static void addCustomer() {
+		try {
+			amazon.addCustomer("sidharth", "#1 NGV Koramangala", 22067130,
+					"smittaldm7@gmail.com", "sid123");
+			amazon.addCustomer("Ramona", "#5 MG Road", 22023430,
+					"email.vineetmittal@gmail.com", "vin123");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	
 	/*
@@ -481,133 +618,5 @@ public class App {
 	}
 	
 	*/
-	
-	static void addDataToDatabase()
-	{
-		addSuppliersToMarket();
-		addProductsandKeywordsToMarket();
-		addSupplierProductToMarket();
-		addCustomer();
-	}
-	
-	
-
-	
-	
-	static void addSuppliersToMarket()
-	{
-		try {
-			amazon.addSupplier("Guptas", "#101, MG Road, Bangalore");
-			amazon.addSupplier("Mehras", "#12, 5th Block Kormangala, Bangalore");
-			amazon.addSupplier("Reddys", "#322, JC Road, Bangalore");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	static void addProductsandKeywordsToMarket()
-	{
-		try 
-		{
-			amazon.addKeyword("shoes");
-			amazon.addKeyword("puma");
-			amazon.addKeyword("running");
-			
-			amazon.addProduct("Puma Running Shoes");
-			
-			List<String> keywords = new ArrayList<String>();
-			keywords.add("shoes");
-			keywords.add("puma");
-			keywords.add("running");
-			amazon.addProductKeyword("Puma Running Shoes", keywords);
-			
-			
-			amazon.addKeyword("laptop");
-			amazon.addKeyword("dell");
-			amazon.addKeyword("computer");
-			amazon.addKeyword("inspiron");
-			
-			amazon.addProduct("Dell Inspiron Laptop");
-			
-			keywords.clear();
-			keywords.add("laptop");
-			keywords.add("dell");
-			keywords.add("computer");
-			keywords.add("inspiron");
-			amazon.addProductKeyword("Dell Inspiron Laptop", keywords);
-			
-			
-			amazon.addKeyword("pigeon");
-			amazon.addKeyword("stove");
-			amazon.addKeyword("cooking");
-			amazon.addKeyword("gas");
-			
-			amazon.addProduct("Pigeon Gas Stove");
-			
-			keywords.clear();
-			keywords.add("pigeon");
-			keywords.add("stove");
-			keywords.add("cooking");
-			keywords.add("gas");
-			amazon.addProductKeyword("Pigeon Gas Stove", keywords);
-			
-			
-			amazon.addKeyword("LG");
-			amazon.addKeyword("190");
-			amazon.addKeyword("fridge");
-			amazon.addKeyword("refrigerator");
-			
-			amazon.addProduct("LG 190L Refrigerator");
-			
-			keywords.clear();
-			keywords.add("LG");
-			keywords.add("190");
-			keywords.add("fridge");
-			keywords.add("refrigerator");
-			amazon.addProductKeyword("LG 190L Refrigerator", keywords);
-			
-		} 
-
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	static void addSupplierProductToMarket()
-	{
-		try 
-		{
-			amazon.addSupplierProduct("Guptas", "Puma Running Shoes", 5, 3000, 0);
-			amazon.addSupplierProduct("Mehras", "Puma Running Shoes" , 1, 2800, 0);
-			amazon.addSupplierProduct("Mehras", "Dell Inspiron Laptop", 5, 20000, 0);
-			amazon.addSupplierProduct("Reddys", "Dell Inspiron Laptop", 10, 18000, 0);
-			amazon.addSupplierProduct("Mehras", "Pigeon Gas Stove", 5, 2000, 0);
-			amazon.addSupplierProduct("Mehras", "LG 190L Refrigerator", 50, 10000, 10);
-			
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		
-		
-		
-	}
-	private static void addCustomer() {
-		try {
-			amazon.addCustomer("sidharth", "#1 NGV Koramangala", 22067130,
-					"smittaldm7@gmail.com", "sid123");
-			amazon.addCustomer("Ramona", "#5 MG Road", 22023430,
-					"email.vineetmittal@gmail.com", "vin123");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
 }

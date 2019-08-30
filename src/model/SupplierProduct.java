@@ -2,58 +2,85 @@ package model;
 
 public class SupplierProduct {
 
-	String supplierName;
-	String productName;
+	int id;
+	int supplierId;
+	int productId;
 	float price;
 	float discountPercent;
 	int stock;
 	
-	public SupplierProduct(String supplierName, String productName, 
-				int stock, float price, float discountPercent) 
-	{
+
+	public SupplierProduct(int supplierId, int productId, int stock, float price, float discountPercent) {
 		super();
-		this.supplierName = supplierName;
-		this.productName = productName;
-		this.stock = stock;
+		this.supplierId = supplierId;
+		this.productId = productId;
 		this.price = price;
 		this.discountPercent = discountPercent;
-	
-	}
-	
-	public String getSupplierName() {
-		return supplierName;
+		this.stock = stock;
 	}
 
-	public String getProductName() {
-		return productName;
-	}
 	
-	public int getStock() {
-		return stock;
+	
+	public int getId() {
+		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(int supplierId) {
+		this.supplierId = supplierId;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
 
 	public float getPrice() {
 		return price;
 	}
 
+	public void setPrice(float price) {
+		this.price = price;
+	}
 
 	public float getDiscountPercent() {
 		return discountPercent;
 	}
 
+	public void setDiscountPercent(float discountPercent) {
+		this.discountPercent = discountPercent;
+	}
 
+	public int getStock() {
+		return stock;
+	}
 
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+	
+	
+	
 	float priceAfterDiscount()
 	{
 		return (price * ((100f-discountPercent)/100f));
 	}
 	
+	
+
 	@Override
 	public String toString() {
-		return "SupplierProduct [supplierName=" + supplierName
-				+ ", productName=" + productName + ", stock=" + stock
-				+ ", price=" + price + ", discountPercent=" + discountPercent
-				+ "]";
+		return "SupplierProduct [id=" + id + ", supplierId=" + supplierId + ", productId=" + productId + ", price="
+				+ price + ", discountPercent=" + discountPercent + ", stock=" + stock + "]";
 	}
 }

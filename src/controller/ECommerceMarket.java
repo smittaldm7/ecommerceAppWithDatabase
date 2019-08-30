@@ -30,7 +30,7 @@ import model.SupplierProduct;
 public class ECommerceMarket {
 
 
-	int currentCustomerID=0;
+	int currentCustomerID=1;//0; changing to 1 so I don't have to login each time while testing
 	
 	
 	public void addKeyword(String text) throws SQLException 
@@ -70,11 +70,11 @@ public class ECommerceMarket {
 		supplierDAO.addSupplier(new Supplier(name,address));
 	}
 	
-	void addSupplierProduct(String supplierName, String productName, int stock, 
+	void addSupplierProduct(int supplierId, int productId, int stock, 
 			float price, float discountPercent) throws SQLException
 	{
 		SupplierProduct supplierProduct = 
-				new SupplierProduct(supplierName, productName, stock, price, discountPercent);
+				new SupplierProduct(supplierId, productId, stock, price, discountPercent);
 		SupplierProductDAO supplierProductDAO = new SupplierProductDAO();
 		supplierProductDAO.addSupplierProduct(supplierProduct);
 		
@@ -163,9 +163,9 @@ public class ECommerceMarket {
 	}
 	
 	
-	public List<SupplierProduct> getProductDetails(String productName) throws SQLException {
+	public List<SupplierProduct> getProductDetails(int productId) throws SQLException {
 		ProductDAO productDAO = new ProductDAO();
-		return productDAO.getProductSuppliers(productName);
+		return productDAO.getProductSuppliers(productId);
 		
 		
 	}

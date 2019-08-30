@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.Database;
 import model.CartItem;
 
 
@@ -20,7 +21,7 @@ public class CartDAO {
 		
 		CallableStatement cstmt = 
 				conn.prepareCall
-				("{call addcartitem(?,?,?,?,?)} ");
+				("{call add_cart_item(?,?,?,?,?)} ");
 		
 		cstmt.setInt(1, customerID);
 		cstmt.setString(2, productName);
@@ -44,7 +45,7 @@ public class CartDAO {
 			Connection conn = Database.getInstance().getConnection();
 			
 			PreparedStatement pstmt = 
-					conn.prepareStatement("delete from cartitem where customer_id = ?");
+					conn.prepareStatement("delete from cart_item where customer_id = ?");
 			
 			pstmt.setInt(1, CustomerID);	
 			
@@ -61,13 +62,13 @@ public class CartDAO {
 		Connection conn = Database.getInstance().getConnection();
 		
 		PreparedStatement p = 
-				conn.prepareStatement("select p.name,s.name,ci.quantity,ci.itempriceafterdiscount,"
-						+ "ci.totalPriceAfterDiscount "
-						+ "from cartitem ci "
-						+ "inner join supplierproductrelationship spr"
-						+ 			" on ci.supplierproductrelationship_id = spr.id"
-						+ " inner join product p on spr.product_id = p.id"
-						+ " inner join supplier s on spr.supplier_id = s.id"
+				conn.prepareStatement("select p.name,s.name,ci.quantity,ci.item_price_after_discount,"
+						+ "ci.total_price_after_discount "
+						+ "from cart_item ci "
+						+ "inner join supplier_product sp"
+						+ 			" on ci.supplier_product_id = sp.id"
+						+ " inner join product p on sp.product_id = p.id"
+						+ " inner join supplier s on sp.supplier_id = s.id"
 						+ " where customer_id = ?");
 		 
 		p.setInt(1, customerID);

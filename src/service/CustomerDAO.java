@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import database.Database;
 import model.Customer;
 
 public class CustomerDAO {
@@ -14,7 +15,7 @@ public class CustomerDAO {
 		Connection conn = Database.getInstance().getConnection();
 		
 		PreparedStatement pstmt = 
-				conn.prepareStatement("Insert into Customer (name, address, phonenumber,"
+				conn.prepareStatement("Insert into Customer (name, address, phone_number,"
 						+ "email, password )values (?,?,?,?,?)");
 		
 		pstmt.setString(1, customer.getName());

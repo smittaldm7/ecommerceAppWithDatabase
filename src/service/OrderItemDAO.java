@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.Database;
 import model.OrderItem;
 
 public class OrderItemDAO {
@@ -17,10 +18,9 @@ public class OrderItemDAO {
 
 		Connection conn = Database.getInstance().getConnection();
 		
-		CallableStatement cstmt = conn.prepareCall("{call getOrderItems(?,?)}");
+		CallableStatement cstmt = conn.prepareCall("{call get_order_items(?)}");
 		
-		cstmt.setInt(1,customerID);
-		cstmt.setInt(2,orderID);
+		cstmt.setInt(1,orderID);
 		
 		cstmt.execute();
 		
@@ -29,8 +29,8 @@ public class OrderItemDAO {
 		while(rs.next())
 			{
 			OrderItem orderItem = new OrderItem(rs.getString(1), rs.getString(2),
-							rs.getInt(3), rs.getTimestamp(4), rs.getFloat(5)
-							,rs.getFloat(6));
+							rs.getInt(3), rs.getFloat(4)
+							);
 			orderItemList.add(orderItem);
 			}
 			

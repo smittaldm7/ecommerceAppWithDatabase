@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.Database;
 import model.Product;
 import model.ProductKeyword;
 
@@ -20,7 +21,7 @@ public class ProductKeywordDAO {
 	Connection conn = Database.getInstance().getConnection();
 
 	PreparedStatement p = conn
-			.prepareStatement("insert into ProductKeywordRelationship ( Product_Id,"
+			.prepareStatement("insert into product_keyword_relationship ( Product_Id,"
 					+ "Keyword_Id) values (?,?)");
 
 	p.setInt(1, productKeyword.getProductID());
@@ -35,11 +36,13 @@ public class ProductKeywordDAO {
 	}
 
 	public List<Product> getProductFromSearchString(String searchString) throws SQLException {
+		
+		///For no reason we choose to do via stored procedure instead of prepared statement
 		Connection conn = Database.getInstance().getConnection();
 		
 		List<Product> favourableProducts = new ArrayList<Product>();
 		
-		CallableStatement cstmt = conn.prepareCall("{call getProductsFromSearchString(?)}");
+		CallableStatement cstmt = conn.prepareCall("{call get_products_from_search_string(?)}");
 
 		cstmt.setString(1, searchString);
 				

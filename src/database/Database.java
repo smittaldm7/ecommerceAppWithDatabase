@@ -1,4 +1,4 @@
-package service;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -39,8 +39,8 @@ public class Database {
 			throw new Exception("Driver not found");
 			}
 
-		String url = String.format("jdbc:mysql://localhost:%d/ecommerce", 3306);
-		conn = DriverManager.getConnection(url, "root", "password");
+		String url = String.format("jdbc:mysql://localhost:%d/ecommerce_console_app_db", 3306);
+		conn = DriverManager.getConnection(url, "root", "");
 	}
 	
 	public void disconnect() {

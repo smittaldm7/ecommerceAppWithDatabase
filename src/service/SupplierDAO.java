@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import database.Database;
 import model.Supplier;
 
 public class SupplierDAO {
@@ -14,7 +15,7 @@ public class SupplierDAO {
 		Connection conn = Database.getInstance().getConnection();
 
 		PreparedStatement p = conn
-				.prepareStatement("insert into supplier (name,warehouseAddress) values (?,?)");
+				.prepareStatement("insert into supplier (name,warehouse_address) values (?,?)");
 
 		p.setString(1, supplier.getName());
 		p.setString(2,supplier.getWarehouseAddress());
