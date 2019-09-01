@@ -30,8 +30,8 @@ import model.SupplierProduct;
 public class ECommerceMarket {
 
 
-	int currentCustomerID=1;//0; changing to 1 so I don't have to login each time while testing
-	
+	public int currentCustomerID=1; //changing to 1 so I don't have to login each time while testing
+	//public int currentCustomerID=0;
 	
 	public void addKeyword(String text) throws SQLException 
 	{
@@ -41,7 +41,7 @@ public class ECommerceMarket {
 	}
 	
 
-	void addProduct(String name) throws SQLException
+	public void addProduct(String name) throws SQLException
 	{
 		ProductDAO productDAO = new ProductDAO();
 		productDAO.addProduct(new Product(name));
@@ -63,18 +63,18 @@ public class ECommerceMarket {
 		
 	}
 	
-	void addSupplier(String name, String address) throws SQLException
+	public void addSupplier(String name, String address) throws SQLException
 	{
 		//suppliers.add(new Supplier(name, address));
 		SupplierDAO supplierDAO = new SupplierDAO();
 		supplierDAO.addSupplier(new Supplier(name,address));
 	}
 	
-	void addSupplierProduct(int supplierId, int productId, int stock, 
+	public void addSupplierProduct(int supplierId, int productId, int stock, 
 			float price, float discountPercent) throws SQLException
 	{
 		SupplierProduct supplierProduct = 
-				new SupplierProduct(supplierId, productId, stock, price, discountPercent);
+				new SupplierProduct(supplierId, productId, price, discountPercent, stock);
 		SupplierProductDAO supplierProductDAO = new SupplierProductDAO();
 		supplierProductDAO.addSupplierProduct(supplierProduct);
 		
@@ -91,7 +91,7 @@ public class ECommerceMarket {
 	}
 	
 	
-	List<Product> searchForProductWithText(String searchString) throws SQLException
+	public List<Product> searchForProductWithText(String searchString) throws SQLException
 	{
 		List<Product> favourableProducts = new ArrayList<Product>();
 		//search the Products and return favourable products
@@ -163,9 +163,9 @@ public class ECommerceMarket {
 	}
 	
 	
-	public List<SupplierProduct> getProductDetails(int productId) throws SQLException {
+	public List<SupplierProduct> getProductDetails(String productName) throws SQLException {
 		ProductDAO productDAO = new ProductDAO();
-		return productDAO.getProductSuppliers(productId);
+		return productDAO.getProductSuppliers(productName);
 		
 		
 	}

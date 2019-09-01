@@ -15,13 +15,13 @@ import model.Order;
 
 public class OrderDAO {
 	
-//official DAO for order and order item
+
 	public Map<String, Boolean> addOrder(int currentCustomerID) throws SQLException {
 		Connection conn = Database.getInstance().getConnection();
 		
 		CallableStatement cstmt = 
 				conn.prepareCall
-				("{call addorder(?,?,?)} ");
+				("{call add_order(?,?,?)} ");
 		
 		cstmt.setInt(1, currentCustomerID);
 		cstmt.registerOutParameter(2, java.sql.Types.BOOLEAN);;
@@ -36,6 +36,7 @@ public class OrderDAO {
 		Map<String, Boolean> map= new HashMap<>();
 		map.put("cartEmpty",cartEmpty);
 		map.put("insufficientStock", insufficientStock);
+		//System.out.println(""+cartEmpty+insufficientStock);
 		return map;
 	}
 
@@ -45,7 +46,7 @@ public class OrderDAO {
 		Connection conn = Database.getInstance().getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement
-				("select id, date, totalamount from ordertable where customer_id = ?");
+				("select id, date, total_bill_amount from order_table where customer_id = ?");
 		
 		ps.setInt(1, customerID);
 		

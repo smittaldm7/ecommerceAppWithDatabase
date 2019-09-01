@@ -1,4 +1,4 @@
-package controller;
+package view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import controller.ECommerceMarket;
 import database.Database;
 import model.CartItem;
 import model.Customer;
@@ -47,7 +48,7 @@ public class App {
 			System.out.println("9. View Customer Details");//done
 			System.out.println("10. View Orders");//done
 			System.out.println("11. Clear cart");//done
-			System.out.println("15. Exit");
+			System.out.println("12. Exit");
 			
 			System.out.println("enter option:");
 			Scanner input = new Scanner(System.in);
@@ -173,13 +174,14 @@ public class App {
 						System.out.println("cart is empty");
 					}
 					
-					if(map.get("insufficientStock")==true)
+					else if(map.get("insufficientStock")==true)
 					{
 						System.out.println("insufficient stock of one or more items in cart");
 					}
 					else
 					{
 						System.out.println("Order placed");
+						//System.out.println( ""+map.get("cartEmpty") + map.get("insufficientStock"));
 					}
 				}
 				System.in.read();
@@ -189,15 +191,15 @@ public class App {
 			case 7:
 				
 				
-				System.out.println("Enter product id:");
+				System.out.println("Enter product name:");
 				Scanner input3 = new Scanner(System.in);
-				int productId = Integer.parseInt(input3.nextLine());
+				String productName = input3.nextLine();
 				
 				List<SupplierProduct> productSuppliersList = null;
 				
 				try 
 				{
-					productSuppliersList = amazon.getProductDetails(productId);
+					productSuppliersList = amazon.getProductDetails(productName);
 				} 
 				catch (SQLException e2) 
 				{
@@ -303,7 +305,7 @@ public class App {
 				System.in.read();
 				break;
 				
-			case 15:
+			case 12:
 				System.exit(0);
 				
 			}

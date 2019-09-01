@@ -1,26 +1,31 @@
 package model;
 
 public class OrderItem {
-	String productName;
-	String supplierName;
+	
+	int id;
+	int supplier_product_id;
 	int quantity;
 	float itemPriceAfterDiscount;
-	
+	float totalPriceAfterDiscount;
 	@Override
 	public String toString() {
-		return "OrderItem [productName=" + productName + ", supplierName="
-				+ supplierName + ", quantity=" + quantity 
-				+ ", itemPriceAfterDiscount=" + itemPriceAfterDiscount + "]";
+		return "OrderItem [id=" + id + ", supplier_product_id=" + supplier_product_id + ", quantity=" + quantity
+				+ ", itemPriceAfterDiscount=" + itemPriceAfterDiscount + ", totalPriceAfterDiscount="
+				+ totalPriceAfterDiscount + "]";
 	}
-
-	public OrderItem(String productName, String supplierName, int quantity,
-			float itemPriceAfterDiscount) {
+	public OrderItem(int supplier_product_id, int quantity, float itemPriceAfterDiscount,
+			float totalPriceAfterDiscount) {
 		super();
-		this.productName = productName;
-		this.supplierName = supplierName;
+		this.supplier_product_id = supplier_product_id;
 		this.quantity = quantity;
 		this.itemPriceAfterDiscount = itemPriceAfterDiscount;
+		this.totalPriceAfterDiscount = totalPriceAfterDiscount;
 	}
+	
+	
+	
+
+
 
 	
 	

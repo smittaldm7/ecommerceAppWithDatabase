@@ -10,7 +10,7 @@ public class SupplierProduct {
 	int stock;
 	
 
-	public SupplierProduct(int supplierId, int productId, int stock, float price, float discountPercent) {
+	public SupplierProduct(int supplierId, int productId, float price, float discountPercent, int stock) {
 		super();
 		this.supplierId = supplierId;
 		this.productId = productId;

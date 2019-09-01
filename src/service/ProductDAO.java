@@ -57,7 +57,7 @@ public class ProductDAO {
 		Connection conn = Database.getInstance().getConnection();
 		
 		CallableStatement c = conn
-				.prepareCall("{call getProductSuppliers(?)}");
+				.prepareCall("{call get_product_suppliers(?)}");
 		
 		c.setString(1,productName);
 		
@@ -67,8 +67,11 @@ public class ProductDAO {
 				
 		while(rs.next())
 		{
-			SupplierProduct sp = new SupplierProduct(productName, rs.getString(1),
-					rs.getInt(2),	rs.getFloat(3), rs.getFloat(4));
+			System.out.println(rs.getRow());
+			//SupplierProduct sp = new SupplierProduct(rs.getInt(1),
+			//		rs.getInt(2),rs.getFloat(3),	rs.getFloat(4), rs.getInt(5));
+			SupplierProduct sp = new SupplierProduct(rs.getInt("supplier_id"),
+					rs.getInt("product_id"),rs.getFloat("price"),	rs.getFloat("discount_percent"), rs.getInt("stock"));
 			productSuppliersList.add(sp);
 		}
 		

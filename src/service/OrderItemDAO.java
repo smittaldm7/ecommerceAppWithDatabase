@@ -2,6 +2,7 @@ package service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,23 +19,24 @@ public class OrderItemDAO {
 
 		Connection conn = Database.getInstance().getConnection();
 		
-		CallableStatement cstmt = conn.prepareCall("{call get_order_items(?)}");
+		PreparedStatement pstmt = conn.prepareStatement("SELECT supplier_product_id,\r\n" + 
+				"		quantity,\r\n" + 
+				"		item_price_after_discount,\r\n" + 
+				"		total_price_after_discount  FROM order_item WHERE order_id = ?");
 		
-		cstmt.setInt(1,orderID);
+		pstmt.setInt(1,orderID);
 		
-		cstmt.execute();
-		
-		ResultSet rs = cstmt.getResultSet();
+		ResultSet rs = pstmt.executeQuery();
 		
 		while(rs.next())
 			{
-			OrderItem orderItem = new OrderItem(rs.getString(1), rs.getString(2),
-							rs.getInt(3), rs.getFloat(4)
+			OrderItem orderItem = new OrderItem(rs.getInt(1), rs.getInt(2),
+							rs.getFloat(3), rs.getFloat(4)
 							);
 			orderItemList.add(orderItem);
 			}
 			
-		cstmt.close();
+		pstmt.close();
 		
 		return orderItemList;
 	}
