@@ -109,6 +109,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `add_order`(
 
 
 
+
+
+
 )
 BEGIN
 
@@ -134,24 +137,30 @@ else
 		set InsufficientStock = 1;
 	else
 		set InsufficientStock = 0;
+		
+		/*Get total bill amount for all items in cart*/
 		set SumTotal = (select sum(total_price_after_discount) from cart_item where customer_id = CustomerId);
+		
+		/*create order entry*/
 		insert into order_table (customer_id, date, total_bill_amount) values (CustomerId, NOW(), SumTotal);
 		
+		/*get order id of row just created*/
 		set OrderId = (select max(id) from order_table where customer_id=CustomerId);
 		
 		
-		CREATE TABLE temp AS 
-			SELECT OrderId AS order_id, supplier_product_id, quantity, item_price_after_discount,	total_price_after_discount 
+	
+		/*creating order itme entries*/
+		INSERT into order_item (order_id, supplier_product_id, quantity, item_price_after_discount, total_price_after_discount)
+			SELECT OrderId, supplier_product_id, quantity, item_price_after_discount, total_price_after_discount 
 			FROM cart_item;
 
-		SELECT * FROM temp;
-
-		INSERT into order_item (order_id, supplier_product_id, quantity, item_price_after_discount, total_price_after_discount)
-			SELECT order_id, supplier_product_id, quantity, item_price_after_discount, total_price_after_discount 
-			FROM temp;
-
-		DROP TABLE temp;
+		/*removing stock from inventory*/
+		update order_item oi 
+			INNER JOIN supplier_product sp ON oi.supplier_product_id = sp.id
+			SET sp.stock = sp.stock-oi.quantity
+			WHERE oi.order_id =OrderId;
 		
+
 		DELETE from cart_item where customer_id = CustomerId;
 	end if;
 end if;
@@ -196,9 +205,9 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   KEY `FK_cart_item_customer` (`customer_id`),
   CONSTRAINT `FK_cart_item_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT `FK_cart_item_supplier_product` FOREIGN KEY (`supplier_product_id`) REFERENCES `supplier_product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
--- Dumping data for table ecommerce_console_app_db.cart_item: ~1 rows (approximately)
+-- Dumping data for table ecommerce_console_app_db.cart_item: ~0 rows (approximately)
 /*!40000 ALTER TABLE `cart_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cart_item` ENABLE KEYS */;
 
@@ -305,9 +314,9 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   PRIMARY KEY (`id`),
   KEY `FK_order_item_supplier_product` (`supplier_product_id`),
   CONSTRAINT `FK_order_item_supplier_product` FOREIGN KEY (`supplier_product_id`) REFERENCES `supplier_product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
--- Dumping data for table ecommerce_console_app_db.order_item: ~4 rows (approximately)
+-- Dumping data for table ecommerce_console_app_db.order_item: ~8 rows (approximately)
 /*!40000 ALTER TABLE `order_item` DISABLE KEYS */;
 INSERT INTO `order_item` (`id`, `order_id`, `supplier_product_id`, `quantity`, `item_price_after_discount`, `total_price_after_discount`) VALUES
 	(1, 5, 18, 2, 900, 1800),
@@ -315,7 +324,11 @@ INSERT INTO `order_item` (`id`, `order_id`, `supplier_product_id`, `quantity`, `
 	(4, 8, 18, 2, 900, 1800),
 	(5, 8, 20, 1, 20000, 20000),
 	(7, 9, 18, 2, 900, 1800),
-	(8, 9, 20, 1, 20000, 20000);
+	(8, 9, 20, 1, 20000, 20000),
+	(10, 10, 18, 1, 900, 900),
+	(11, 10, 19, 1, 2800, 2800),
+	(13, 11, 19, 3, 2800, 8400),
+	(14, 11, 18, 5, 900, 4500);
 /*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
 
 -- Dumping structure for table ecommerce_console_app_db.order_table
@@ -327,9 +340,9 @@ CREATE TABLE IF NOT EXISTS `order_table` (
   PRIMARY KEY (`id`),
   KEY `FK_order_customer` (`customer_id`),
   CONSTRAINT `FK_order_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
--- Dumping data for table ecommerce_console_app_db.order_table: ~7 rows (approximately)
+-- Dumping data for table ecommerce_console_app_db.order_table: ~9 rows (approximately)
 /*!40000 ALTER TABLE `order_table` DISABLE KEYS */;
 INSERT INTO `order_table` (`id`, `customer_id`, `date`, `total_bill_amount`) VALUES
 	(2, 1, '2019-08-31 21:50:41', 100),
@@ -339,7 +352,9 @@ INSERT INTO `order_table` (`id`, `customer_id`, `date`, `total_bill_amount`) VAL
 	(6, 1, '2019-08-31 22:29:15', 21800),
 	(7, 1, '2019-09-01 11:55:10', 21800),
 	(8, 1, '2019-09-01 11:56:06', 21800),
-	(9, 1, '2019-09-01 11:56:59', 21800);
+	(9, 1, '2019-09-01 11:56:59', 21800),
+	(10, 1, '2019-09-01 12:53:06', 3700),
+	(11, 1, '2019-09-01 13:42:11', 12900);
 /*!40000 ALTER TABLE `order_table` ENABLE KEYS */;
 
 -- Dumping structure for table ecommerce_console_app_db.product
@@ -421,9 +436,9 @@ CREATE TABLE IF NOT EXISTS `supplier_product` (
 -- Dumping data for table ecommerce_console_app_db.supplier_product: ~5 rows (approximately)
 /*!40000 ALTER TABLE `supplier_product` DISABLE KEYS */;
 INSERT INTO `supplier_product` (`id`, `supplier_id`, `product_id`, `price`, `discount_percent`, `stock`) VALUES
-	(18, 1, 1, 1000, 10, 5),
-	(19, 1, 2, 2800, 0, 1),
-	(20, 2, 2, 20000, 0, 5),
+	(18, 1, 1, 1000, 10, 7),
+	(19, 1, 2, 2800, 0, 9),
+	(20, 2, 2, 20000, 0, 4),
 	(21, 2, 3, 18000, 0, 10),
 	(22, 3, 2, 2000, 0, 5);
 /*!40000 ALTER TABLE `supplier_product` ENABLE KEYS */;
